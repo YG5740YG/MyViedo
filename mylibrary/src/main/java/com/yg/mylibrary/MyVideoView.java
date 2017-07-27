@@ -1,7 +1,10 @@
 package com.yg.mylibrary;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -12,6 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by Administrator on 2017/7/26 0026.
@@ -59,6 +66,8 @@ public class MyVideoView {
      */
     ImageView mMaskImage;
 
+    Bitmap mBitmap;
+    String mImagePath;
     /**
      * 获取视频播放器
      * @return
@@ -113,6 +122,27 @@ public class MyVideoView {
     }
     public MyVideoView setMaskImage(int mipmap){
         mMaskImage.setImageDrawable(mContext.getResources().getDrawable(mipmap));
+        return this;
+    }
+    public MyVideoView setMaskImage(String imagePath){
+        mImagePath=imagePath;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL url = null;
+                try {
+                    url = new URL(mImagePath);
+                    mBitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    Message message=new Message();
+                    message.what = 1;
+                    handler.sendMessageDelayed(message,0);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         return this;
     }
     private void setUp() {
@@ -274,6 +304,9 @@ public class MyVideoView {
                         stopVideo();
                         setMastShow(true);
                     }
+                    break;
+                case 1:
+                    mMaskImage.setImageBitmap(mBitmap);
                     break;
                 default:
                     break;
