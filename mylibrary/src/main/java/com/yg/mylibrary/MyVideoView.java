@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -17,21 +18,51 @@ import android.widget.VideoView;
  */
 
 public class MyVideoView {
+    /**
+     * VideoView
+     */
     private VideoView mVideoView;
+    /**
+     * 显示时间view
+     */
     private TextView mVideoControllTextView;
+    /**
+     * 显示播放图标
+     */
     private ImageView mVideoControllImageView;
-    private SeekBar mSeekBar;
-    private int mCounter=0;
-    String mDuration;
-    private boolean mIsVideoPlaying=false;
-    boolean mDayFlage=false;
-    boolean mHourFlage=false;
-    boolean mMinFlage=false;
+//    private SeekBar mSeekBar;
+    /**
+     * 滚动条
+     */
+    private ProgressBar mProgressBar;
     Context mContext;
+    /**
+     * 播放器装载布局
+     */
     View mVideoViewLayout;
-    String mVideoPath;
+    /**
+     * 实例化
+     */
     MyVideoView mMyVideoView;
+    /**
+     * 播放停止按钮父容器
+     */
     LinearLayout mVideoContent;
+
+    VideoData mVideoData;
+    /**
+     * 遮罩停止图片父布局
+     */
+    LinearLayout mVideoStopImageLayout;
+    /**
+     * 遮罩图片
+     */
+    ImageView mMaskImage;
+
+    /**
+     * 获取视频播放器
+     * @return
+     */
     public View getVideoViewLayout(){
         return mVideoViewLayout;
     }
@@ -40,6 +71,7 @@ public class MyVideoView {
     }
     public MyVideoView inintVideoData(){
         mVideoViewLayout= LayoutInflater.from(mContext).inflate(R.layout.fragment_video_test_layout,null);
+        mVideoData=new VideoData();
         findView();
         setUp();
         mMyVideoView=this;
@@ -48,23 +80,65 @@ public class MyVideoView {
     private void findView() {
         mVideoView=(VideoView)mVideoViewLayout.findViewById(R.id.my_video_view);
         mVideoControllTextView=(TextView)mVideoViewLayout.findViewById(R.id.video_view_timecontrol_text_view);
-        mSeekBar=(SeekBar)mVideoViewLayout.findViewById(R.id.video_view_seeker_bar);
+//        mSeekBar=(SeekBar)mVideoViewLayout.findViewById(R.id.video_view_seeker_bar);
+        mProgressBar=(ProgressBar) mVideoViewLayout.findViewById(R.id.video_view_progress_bar);
         mVideoControllImageView=(ImageView)mVideoViewLayout.findViewById(R.id.video_view_control_image_view);
         mVideoControllTextView=(TextView)mVideoViewLayout.findViewById(R.id.video_view_timecontrol_text_view);
         mVideoContent=(LinearLayout)mVideoViewLayout.findViewById(R.id.video_content);
+        mVideoStopImageLayout=(LinearLayout)mVideoViewLayout.findViewById(R.id.product_video_big_stop_layout);
+        mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
+    }
+
+    /**
+     * 设置遮罩显示或者隐藏
+     * @param show
+     */
+    public void setMastShow(boolean show){
+        if(show) {
+            mMaskImage.setVisibility(View.VISIBLE);
+        }else{
+            mMaskImage.setVisibility(View.GONE);
+        }
+    }
+    /**
+     * 设置遮罩停止按钮显示或者隐藏
+     * @param show
+     */
+    public void setMaskStopImageShow(boolean show){
+        if(show) {
+            mVideoStopImageLayout.setVisibility(View.VISIBLE);
+        }else{
+            mVideoStopImageLayout.setVisibility(View.GONE);
+        }
+    }
+    public MyVideoView setMaskImage(int mipmap){
+        mMaskImage.setImageDrawable(mContext.getResources().getDrawable(mipmap));
+        return this;
     }
     private void setUp() {
+        mVideoStopImageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMaskStopImageShow(false);
+                mMaskImage.setVisibility(View.GONE);
+                mVideoData.setVideoPlaying(true);
+                setChangeStopPlayImage(true);
+                startVideo();
+            }
+        });
         mVideoContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mIsVideoPlaying) {
-                    mIsVideoPlaying=false;
+                if(mVideoData.isVideoPlaying()) {
+                    mVideoData.setVideoPlaying(false);
+                    setChangeStopPlayImage(false);
                     stopVideo();
-                    mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_stop));
                 }else{
-                    mIsVideoPlaying=true;
+                    mVideoData.setVideoPlaying(true);
+                    setChangeStopPlayImage(true);
+                    setMaskStopImageShow(false);
+                    setMastShow(false);
                     startVideo();
-                    mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_play));
                 }
             }
         });
@@ -74,12 +148,7 @@ public class MyVideoView {
                 mp.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                     @Override
                     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                        // 获得当前播放时间和当前视频的长度
-                        int time = ((getCruntTime() * 100) / getTotalTime());
-                        // 设置进度条的主要进度，表示当前的播放时间
-//                                       mSeekBar.setProgress(time);
-                        // 设置进度条的次要进度，表示视频的缓冲进度
-                        mSeekBar.setProgress(percent);
+                        mProgressBar.setProgress(percent);
                     }
                 });
             }
@@ -90,7 +159,7 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-        this.mVideoPath=videoPath;
+        mVideoData.setVideoPath(videoPath);
         return this;
     }
     /**
@@ -100,7 +169,7 @@ public class MyVideoView {
     public MyVideoView loadeVideo(){
         setProgressDrawable(R.drawable.myseekbar);
         setThumb(R.drawable.seekbar_selector_thumb);
-        mVideoView.setVideoPath(mVideoPath);
+        mVideoView.setVideoPath(mVideoData.getVideoPath());
         mVideoView.requestFocus();
         return this;
     }
@@ -119,8 +188,8 @@ public class MyVideoView {
      */
     public void stopVideo(){
         mVideoView.pause();
+        setMaskStopImageShow(true);
     }
-
     /**
      * 获取视频时间总长
      * @return
@@ -142,16 +211,38 @@ public class MyVideoView {
      * @param seekDrawable
      */
     public void setProgressDrawable(int seekDrawable){
-        mSeekBar.setProgressDrawable(mContext.getResources().getDrawable(seekDrawable));
+        mProgressBar.setProgressDrawable(mContext.getResources().getDrawable(seekDrawable));
     }
     /**
      * 设置视频控制器滑块样式
      * @param thumbDrawable
      */
     private void setThumb(int thumbDrawable){
-        mSeekBar.setThumb(mContext.getResources().getDrawable(thumbDrawable));
+//        mProgressBar.setThumb(mContext.getResources().getDrawable(thumbDrawable));
     }
-
+    /**
+     * 设置停止或者播放按钮的显示图片
+     * @param SPImageFlage  true 显示播放，false显示关闭
+     */
+    public void setChangeStopPlayImage(boolean SPImageFlage){
+        if(SPImageFlage){
+            mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_play));
+        }else{
+            mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_stop));
+        }
+    }
+    public void setHorizontalData(Object videoData){
+        mVideoData=(VideoData)videoData ;
+        mVideoView.seekTo(mVideoData.getCruntTime());
+        mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
+        mMaskImage.setVisibility(View.GONE);
+        Message message = new Message();
+        message.what = 0;
+        handler.sendMessageDelayed(message, 600);
+    }
+    public VideoData getVideoData(){
+        return mVideoData;
+    }
     /**
      * 循环控制进度条
      */
@@ -159,18 +250,29 @@ public class MyVideoView {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    if(mCounter==0) {
-                        mDuration = timeCount(getTotalTime());
+                    if(mVideoData.getCounter()==0) {
+                        mVideoData.setDuration(Tools.timeCount(getTotalTime(),mVideoData));
+                        mVideoData.setCounter(1);
                     }
-                    String CrrrentPosition=timeCount(getCruntTime());
-                    mSeekBar.setMax(mVideoView.getDuration()/1000);
-                    mSeekBar.setSecondaryProgress(getCruntTime()/1000);
-                    mVideoControllTextView.setText(CrrrentPosition+"/"+mDuration);
-                    if(getTotalTime()!=getCruntTime()){
-                        mCounter++;
+                    String CrrrentPosition=Tools.timeCount(mVideoData.getCruntTime(),mVideoData);
+                    mVideoData.setCruntTime(getCruntTime());
+                    mVideoData.setTotalTime(getTotalTime());
+                    mVideoData.setCrrrentPosition(CrrrentPosition);
+                    mProgressBar.setMax(mVideoView.getDuration()/1000);
+                    mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
+                    mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
+                    if(mVideoData.getTotalTime()>=mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()){
                         Message message = new Message();
                         message.what = 0;
                         handler.sendMessageDelayed(message, 1000);
+                    }
+                    else if(mVideoData.getTotalTime()<mVideoData.getCruntTime()){
+                        setChangeStopPlayImage(false);
+                        mProgressBar.setSecondaryProgress(0);
+//                        mProgressBar.setProgress(0);
+                        mVideoControllTextView.setText(Tools.timeCount(0,mVideoData)+"/"+mVideoData.getDuration());
+                        stopVideo();
+                        setMastShow(true);
                     }
                     break;
                 default:
@@ -178,53 +280,4 @@ public class MyVideoView {
             }
         }
     };
-    /**
-     * 把时间戳转换成需要的时间形式
-     * @param timeValue 时间戳
-     * @return
-     */
-    public String timeCount(int timeValue){
-        String timeStringValue="";
-        int  mDay = timeValue / (24 * 60 * 60 * 1000);
-        int mHour = (timeValue / (60 * 60 * 1000) - mDay * 24);
-        int  mMin = ((timeValue / (60 * 1000)) - mDay * 24 * 60 - mHour * 60);
-        int   mS = (timeValue / 1000 - mDay * 24 * 60 * 60 - mHour * 60 * 60 - mMin * 60);
-        if(mCounter==0){
-            if(mDay>0){
-                mDayFlage=true;
-            }
-            if (mHour>0){
-                mHourFlage=true;
-            }
-            if(mMin>0){
-                mMinFlage=true;
-            }
-        }
-        if(mHourFlage) {
-            if (mHour < 10) {
-                timeStringValue = "0" + mHour + ":";
-            }else  if(mHour==0){
-                timeStringValue ="00:";
-            }
-            else {
-                timeStringValue = mHour + ":";
-            }
-        }
-        if(mMinFlage) {
-            if (mMin < 10) {
-                timeStringValue = timeStringValue + "0" + mMin + ":";
-            }else if(mMin==0){
-                timeStringValue ="00:";
-            }
-            else {
-                timeStringValue = timeStringValue + mMin + ":";
-            }
-        }
-        if (mS < 10) {
-            timeStringValue=timeStringValue+"0" + mS;
-        } else {
-            timeStringValue=timeStringValue+mS;
-        }
-        return timeStringValue;
-    }
 }
