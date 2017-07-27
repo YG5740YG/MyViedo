@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -30,6 +31,7 @@ public class MyVideoView {
     View mVideoViewLayout;
     String mVideoPath;
     MyVideoView mMyVideoView;
+    LinearLayout mVideoContent;
     public View getVideoViewLayout(){
         return mVideoViewLayout;
     }
@@ -49,9 +51,10 @@ public class MyVideoView {
         mSeekBar=(SeekBar)mVideoViewLayout.findViewById(R.id.video_view_seeker_bar);
         mVideoControllImageView=(ImageView)mVideoViewLayout.findViewById(R.id.video_view_control_image_view);
         mVideoControllTextView=(TextView)mVideoViewLayout.findViewById(R.id.video_view_timecontrol_text_view);
+        mVideoContent=(LinearLayout)mVideoViewLayout.findViewById(R.id.video_content);
     }
     private void setUp() {
-        mVideoControllImageView.setOnClickListener(new View.OnClickListener() {
+        mVideoContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mIsVideoPlaying) {

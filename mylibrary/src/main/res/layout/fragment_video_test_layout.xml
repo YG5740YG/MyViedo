@@ -20,20 +20,26 @@
             android:id="@+id/video_control_layout"
             android:gravity="center|left"
             >
+            <LinearLayout
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:id="@+id/video_content">
             <ImageView
                 android:id="@+id/video_view_control_image_view"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/half_margin"
                 android:src="@mipmap/product_video_stop"
                 android:layout_marginLeft="@dimen/base_margin"
                 />
+            </LinearLayout>
             <SeekBar
                 android:id="@+id/video_view_seeker_bar"
                 android:layout_width="0dp"
                 android:layout_weight="10"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:visibility="visible"
                 android:background="@color/es_w"
                 />
