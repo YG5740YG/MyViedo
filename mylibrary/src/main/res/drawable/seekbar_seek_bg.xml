@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/es_w"/>
+    <stroke android:color="@color/es_w" android:width="@dimen/es_pitch_1" />
+</shape>
