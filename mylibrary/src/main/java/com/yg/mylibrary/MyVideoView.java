@@ -109,6 +109,9 @@ public class MyVideoView {
             mMaskImage.setVisibility(View.GONE);
         }
     }
+    public void setVideoPlayingValue(boolean playingFlage){
+        mVideoData.setVideoPlaying(playingFlage);
+    }
     /**
      * 设置遮罩停止按钮显示或者隐藏
      * @param show
@@ -167,7 +170,6 @@ public class MyVideoView {
                     mVideoData.setVideoPlaying(true);
                     setChangeStopPlayImage(true);
                     setMaskStopImageShow(false);
-                    setMastShow(false);
                     startVideo();
                 }
             }
@@ -211,8 +213,14 @@ public class MyVideoView {
         Message message=new Message();
         message.what = 0;
         handler.sendMessageDelayed(message,200);
+        setVideoBackImage();
     }
 
+    public void setVideoBackImage(){
+        Message message=new Message();
+        message.what = 2;
+        handler.sendMessageDelayed(message,500);
+    }
     /**
      * 停止播放
      */
@@ -308,6 +316,9 @@ public class MyVideoView {
                 case 1:
                     mMaskImage.setImageBitmap(mBitmap);
                     break;
+                case 2:
+                    mVideoView.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
+                    setMastShow(false);
                 default:
                     break;
             }

@@ -17,12 +17,12 @@
                 android:id="@+id/my_video_view"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:background="@color/es_w"
                 />
             <ImageView
                 android:id="@+id/image_mask"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
                 />
             <LinearLayout
                 android:id="@+id/product_video_big_stop_layout"
