@@ -17,13 +17,13 @@ public class Tools {
      * @param timeValue 时间戳
      * @return
      */
-    public static String timeCount(int timeValue,VideoData videoData){
+    public static String timeCount(int timeValue,VideoData videoData,boolean flage){
         String timeStringValue="";
         int  mDay = timeValue / (24 * 60 * 60 * 1000);
         int mHour = (timeValue / (60 * 60 * 1000) - mDay * 24);
         int  mMin = ((timeValue / (60 * 1000)) - mDay * 24 * 60 - mHour * 60);
         int   mS = (timeValue / 1000 - mDay * 24 * 60 * 60 - mHour * 60 * 60 - mMin * 60);
-        if(videoData.getCounter()==0){
+        if(flage){
             if(mDay>0){
                 videoData.setDayFlage(true);
             }

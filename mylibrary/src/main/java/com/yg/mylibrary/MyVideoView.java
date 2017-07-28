@@ -152,11 +152,10 @@ public class MyVideoView {
         mVideoStopImageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setMaskStopImageShow(false);
-                mMaskImage.setVisibility(View.GONE);
                 mVideoData.setVideoPlaying(true);
-                setChangeStopPlayImage(true);
                 startVideo();
+                setMaskStopImageShow(false);
+                setChangeStopPlayImage(true);
             }
         });
         mVideoContent.setOnClickListener(new View.OnClickListener() {
@@ -212,14 +211,14 @@ public class MyVideoView {
         mVideoView.start();
         Message message=new Message();
         message.what = 0;
-        handler.sendMessageDelayed(message,200);
+        handler.sendMessageDelayed(message,600);
         setVideoBackImage();
     }
 
     public void setVideoBackImage(){
         Message message=new Message();
         message.what = 2;
-        handler.sendMessageDelayed(message,500);
+        handler.sendMessageDelayed(message,600);
     }
     /**
      * 停止播放
@@ -288,18 +287,15 @@ public class MyVideoView {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    if(mVideoData.getCounter()==0) {
-                        mVideoData.setDuration(Tools.timeCount(getTotalTime(),mVideoData));
-                        mVideoData.setCounter(1);
-                    }
-                    String CrrrentPosition=Tools.timeCount(mVideoData.getCruntTime(),mVideoData);
+                    mVideoData.setDuration(Tools.timeCount(getTotalTime(),mVideoData,true));
+                    String CrrrentPosition=Tools.timeCount(mVideoData.getCruntTime(),mVideoData,false);
                     mVideoData.setCruntTime(getCruntTime());
                     mVideoData.setTotalTime(getTotalTime());
                     mVideoData.setCrrrentPosition(CrrrentPosition);
                     mProgressBar.setMax(mVideoView.getDuration()/1000);
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
-                    if(mVideoData.getTotalTime()>=mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()){
+                    if(mVideoData.getTotalTime()>=mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
                         Message message = new Message();
                         message.what = 0;
                         handler.sendMessageDelayed(message, 1000);
@@ -308,7 +304,7 @@ public class MyVideoView {
                         setChangeStopPlayImage(false);
                         mProgressBar.setSecondaryProgress(0);
 //                        mProgressBar.setProgress(0);
-                        mVideoControllTextView.setText(Tools.timeCount(0,mVideoData)+"/"+mVideoData.getDuration());
+                        mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
                         stopVideo();
                         setMastShow(true);
                     }
