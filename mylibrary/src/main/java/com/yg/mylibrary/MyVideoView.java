@@ -211,14 +211,14 @@ public class MyVideoView {
         mVideoView.start();
         Message message=new Message();
         message.what = 0;
-        handler.sendMessageDelayed(message,600);
+        handler.sendMessageDelayed(message,300);
         setVideoBackImage();
     }
 
     public void setVideoBackImage(){
         Message message=new Message();
         message.what = 2;
-        handler.sendMessageDelayed(message,600);
+        handler.sendMessageDelayed(message,300);
     }
     /**
      * 停止播放
@@ -275,7 +275,7 @@ public class MyVideoView {
         mMaskImage.setVisibility(View.GONE);
         Message message = new Message();
         message.what = 0;
-        handler.sendMessageDelayed(message, 600);
+        handler.sendMessageDelayed(message, 300);
     }
     public VideoData getVideoData(){
         return mVideoData;
