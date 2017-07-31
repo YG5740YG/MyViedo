@@ -57,7 +57,7 @@
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/half_margin"
-                    android:src="@mipmap/product_video_stop"
+                    android:src="@mipmap/product_video_play"
                     android:layout_marginLeft="@dimen/base_margin"
                     />
             </LinearLayout>

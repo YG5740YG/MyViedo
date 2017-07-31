@@ -263,9 +263,9 @@ public class MyVideoView {
      */
     public void setChangeStopPlayImage(boolean SPImageFlage){
         if(SPImageFlage){
-            mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_play));
-        }else{
             mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_stop));
+        }else{
+            mVideoControllImageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.product_video_play));
         }
     }
     public void setHorizontalData(Object videoData){
