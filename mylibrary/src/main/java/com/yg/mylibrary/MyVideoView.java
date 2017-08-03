@@ -280,6 +280,14 @@ public class MyVideoView {
     public VideoData getVideoData(){
         return mVideoData;
     }
+
+    /**
+     * 设置播放的位置
+     * @param currentTime
+     */
+    public void setVideoCurrentTime(int currentTime){
+        mVideoView.seekTo(currentTime);
+    }
     /**
      * 循环控制进度条
      */
