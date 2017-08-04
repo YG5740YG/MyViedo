@@ -89,6 +89,9 @@ public class CalendarView extends View {
     int mPaintBackGroundJuColor=Color.parseColor("#ff6700");
     int mPaintBackGroundRedColor=Color.RED;
     int mPaintBackGroundWhiteColor=Color.WHITE;
+
+    int mCruRow=0;
+    int mColumn=0;
     public CalendarView(Context context) {
         super(context);
         init();
@@ -254,7 +257,6 @@ public class CalendarView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 dataEnd=new Date(System.currentTimeMillis());
-                Log.d("gg===========",(dataEnd.getTime()-dateStart.getTime())+"");
                 if(dataEnd.getTime()-dateStart.getTime()<1500) {
                     if (!mClickable) return true;
                     int upX = (int) event.getX();
@@ -270,7 +272,6 @@ public class CalendarView extends View {
                         performClick();
                         onLongClick((upX + downX) / 2, (upY + downY) / 2);
                     }
-                    Log.d("gg===========long==",(dataEnd.getTime()-dateStart.getTime())+"");
                 }
                 break;
         }
@@ -302,6 +303,17 @@ public class CalendarView extends View {
                 mListener.onClickDateListener(mSelYear, (mSelMonth + 1), mSelDate);
             }
         }else{
+            if(mSelYear<mCurYear){
+                return;
+            }else {
+                if (mSelMonth < mCurMonth) {
+                    return;
+                }else {
+                    if (mCurDate > mDays[row][column]&&mSelMonth==mCurMonth) {
+                        return;
+                    }
+                }
+            }
             if(mOptionalDates.contains(getSelData(mSelYear, mSelMonth, mDays[row][column]))){
                 mOptionalDates.remove(getSelData(mSelYear, mSelMonth, mDays[row][column]));
             }else{
@@ -321,6 +333,8 @@ public class CalendarView extends View {
     private void onLongClick(int x, int y){
         int row = y / mRowSize;
         int column = x / mColumnSize;
+        mCruRow=row;
+        mColumn=column;
         setSelYTD(mSelYear, mSelMonth, mDays[row][column]);
         if(mLongClickListener != null){
             // 执行回调
@@ -344,6 +358,12 @@ public class CalendarView extends View {
         mRowSize = getHeight() / NUM_ROWS;
     }
 
+    public void setAddMore(){
+        if(!mOptionalDates.contains(getSelData(mSelYear, mSelMonth, mDays[mCruRow][mColumn]))) {
+            mOptionalDates.add(getSelData(mSelYear, mSelMonth, mDays[mCruRow][mColumn]));
+            invalidate();
+        }
+    }
     /**
      * 设置可选择日期
      * @param dates 日期数据
