@@ -317,7 +317,7 @@ public class CalendarView extends View {
                 if (mSelMonth < mCurMonth) {
                     return;
                 }else {
-                    if (mCurDate > mDays[row][column]&&mSelMonth==mCurMonth) {
+                    if (mCurDate >= mDays[row][column]&&mSelMonth==mCurMonth) {
                         return;
                     }
                 }
