@@ -92,6 +92,10 @@ public class CalendarView extends View {
 
     int mCruRow=0;
     int mColumn=0;
+
+    int mLongTime=1500;
+
+
     public CalendarView(Context context) {
         super(context);
         init();
@@ -241,6 +245,10 @@ public class CalendarView extends View {
             }
         }
     }
+    public void setLongTime(int time){
+        this.mLongTime=time;
+    }
+
 
     private int downX = 0,downY = 0;
 
@@ -257,7 +265,7 @@ public class CalendarView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 dataEnd=new Date(System.currentTimeMillis());
-                if(dataEnd.getTime()-dateStart.getTime()<1500) {
+                if(dataEnd.getTime()-dateStart.getTime()<mLongTime) {
                     if (!mClickable) return true;
                     int upX = (int) event.getX();
                     int upY = (int) event.getY();

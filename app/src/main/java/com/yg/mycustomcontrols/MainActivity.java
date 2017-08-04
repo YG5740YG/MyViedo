@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
         linearLayout.addView(mMyVideoView.getVideoViewLayout());
         mMyCalendarView=new MyCalendarView(getApplicationContext(),1);
         mMyCalendarView.setOnListen(this);
+        mMyCalendarView.getCanlendarView().setLongTime(500);
         mMyCalendarView.getTextSelectMonth().setText(mMyCalendarView.getCanlendarView().getDate());
         mMyCalendarView.getCanlendarView().setOnLongClickDate(new CalendarView.OnLongClickListener() {
             @Override
             public void onLongClickDateListener(int year, int month, int day) {
                 Log.d("gg===========","=="+year+"=="+month+"=="+day);
-                mMyCalendarView.getCanlendarView().setAddMore();
             }
         });
         linearLayout.addView(mMyCalendarView);
