@@ -38,6 +38,77 @@
             android:layout_marginRight="@dimen/base_margin"
             android:src="@drawable/ic_arrow_rigth_gray"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@color/es_w">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周日"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周六"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周五"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周四"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周三"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周二"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周一"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+    </LinearLayout>
     <com.yg.mylibrary.Calendar.CalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"

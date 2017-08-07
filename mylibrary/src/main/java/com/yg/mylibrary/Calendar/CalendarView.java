@@ -314,11 +314,13 @@ public class CalendarView extends View {
             if(mSelYear<mCurYear){
                 return;
             }else {
-                if (mSelMonth < mCurMonth) {
-                    return;
-                }else {
-                    if (mCurDate >= mDays[row][column]&&mSelMonth==mCurMonth) {
+                if(mSelYear==mCurYear) {
+                    if (mSelMonth < mCurMonth) {
                         return;
+                    } else {
+                        if (mCurDate >= mDays[row][column] && mSelMonth == mCurMonth) {
+                            return;
+                        }
                     }
                 }
             }
