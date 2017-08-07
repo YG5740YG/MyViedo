@@ -5,12 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,6 +98,7 @@ public class CalendarView extends View {
     int mColumn=0;
 
     int mLongTime=1500;
+    boolean mBoolean=true;
 
 
     public CalendarView(Context context) {
@@ -250,36 +255,46 @@ public class CalendarView extends View {
     }
 
 
-    private int downX = 0,downY = 0;
+    private int downX = 0,downY = 0, upX=0,upY=0;
+    private class DataHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                if(mBoolean) {
+                        performClick();
+                        onLongClick(downX,downY);
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int eventCode = event.getAction();
         switch(eventCode){
             case MotionEvent.ACTION_DOWN:
+                mBoolean=true;
                 dateStart=new Date(System.currentTimeMillis());
                 downX = (int) event.getX();
                 downY = (int) event.getY();
+                Message message=new Message();
+                message.what=0;
+                DataHandler dataHandler=new DataHandler();
+                dataHandler.sendMessageDelayed(message,mLongTime);
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.d("gg============1234856","");
                 break;
             case MotionEvent.ACTION_UP:
                 dataEnd=new Date(System.currentTimeMillis());
                 if(dataEnd.getTime()-dateStart.getTime()<mLongTime) {
+                    mBoolean=false;
                     if (!mClickable) return true;
-                    int upX = (int) event.getX();
-                    int upY = (int) event.getY();
-                    if (Math.abs(upX - downX) < 20 && Math.abs(upY - downY) < 20) {
+                     upX = (int) event.getX();
+                     upY = (int) event.getY();
                         performClick();
                         onClick((upX + downX) / 2, (upY + downY) / 2);
-                    }
-                }else{
-                    int upX = (int) event.getX();
-                    int upY = (int) event.getY();
-                    if (Math.abs(upX - downX) < 20 && Math.abs(upY - downY) < 20) {
-                        performClick();
-                        onLongClick((upX + downX) / 2, (upY + downY) / 2);
-                    }
                 }
                 break;
         }

@@ -59,34 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/half_margin"
-            android:text="周六"
-            android:textSize="@dimen/es_pitch12"
-            android:gravity="center"
-            android:textColor="@color/es_bl"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/half_margin"
-            android:text="周五"
-            android:textSize="@dimen/es_pitch12"
-            android:gravity="center"
-            android:textColor="@color/es_bl"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/half_margin"
-            android:text="周四"
-            android:textSize="@dimen/es_pitch12"
-            android:gravity="center"
-            android:textColor="@color/es_bl"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/half_margin"
-            android:text="周三"
+            android:text="周一"
             android:textSize="@dimen/es_pitch12"
             android:gravity="center"
             android:textColor="@color/es_bl"/>
@@ -104,7 +77,34 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/half_margin"
-            android:text="周一"
+            android:text="周三"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周四"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周五"
+            android:textSize="@dimen/es_pitch12"
+            android:gravity="center"
+            android:textColor="@color/es_bl"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/half_margin"
+            android:text="周六"
             android:textSize="@dimen/es_pitch12"
             android:gravity="center"
             android:textColor="@color/es_bl"/>
