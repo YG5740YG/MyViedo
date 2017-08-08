@@ -9,6 +9,9 @@ import com.yg.mylibrary.Calendar.CalendarView;
 import com.yg.mylibrary.Calendar.MyCalendarView;
 import com.yg.mylibrary.MyVideoView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MyCalendarView.OnListen{
     MyVideoView mMyVideoView;
     String mImagePath;
@@ -29,6 +32,17 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
         mMyCalendarView.setOnListen(this);
         mMyCalendarView.getCanlendarView().setLongTime(500);
         mMyCalendarView.getTextSelectMonth().setText(mMyCalendarView.getCanlendarView().getDate());
+        List<String>lis=new ArrayList<>();
+        lis.add("20170808");
+        lis.add("20170809");
+        lis.add("20170810");
+        lis.add("20170820");
+        List<Integer>list=new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(5);
+        list.add(12);
+        mMyCalendarView.getCanlendarView().setOptionalDate(lis).setRiceNum(list).setDataAndRice();
         mMyCalendarView.getCanlendarView().setOnLongClickDate(new CalendarView.OnLongClickListener() {
             @Override
             public void onLongClickDateListener(int year, int month, int day) {

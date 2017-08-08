@@ -7,17 +7,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.CursorAnchorInfo;
+
+import com.yg.mylibrary.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -100,9 +107,13 @@ public class CalendarView extends View {
     int mLongTime=1500;
     boolean mBoolean=true;
 
-
+    Context mContext;
+    List<Integer>mRiceNum;
+    int mRiceKey;
+    LinkedHashMap<String ,Integer>mLinkedHashMap;
     public CalendarView(Context context) {
         super(context);
+        mContext=context;
         init();
     }
     public CalendarView setShowCurDay(int showCurDay){
@@ -127,15 +138,19 @@ public class CalendarView extends View {
 
     public CalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext=context;
         init();
     }
 
     public CalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext=context;
         init();
     }
 
     private void init() {
+        mRiceNum=new ArrayList<>();
+        mLinkedHashMap=new LinkedHashMap<>();
         // 获取手机屏幕参数
         mMetrics = getResources().getDisplayMetrics();
         // 创建画笔
@@ -156,7 +171,27 @@ public class CalendarView extends View {
 //        mBgOptBitmap    = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_bg_course_optional);
 //        mBgNotOptBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_bg_course_not_optional);
     }
-
+    /**
+     * 设置可选择日期
+     * @param dates 日期数据
+     */
+    public CalendarView setOptionalDate(List<String> dates){
+        this.mOptionalDates = dates;
+        return this;
+    }
+    public void setDataAndRice(){
+        if(mOptionalDates.size()>0&&mRiceNum.size()>0) {
+            for (int i=0;i<mOptionalDates.size();i++) {
+                mLinkedHashMap.put(mOptionalDates.get(i),mRiceNum.get(i));
+            }
+        }
+        invalidate();
+    }
+    public CalendarView setRiceNum(List<Integer>riceNum){
+        mRiceNum=new ArrayList<>();
+        mRiceNum=riceNum;
+        return this;
+    }
     public int getmCurYear(){
         return mCurYear;
     }
@@ -168,6 +203,7 @@ public class CalendarView extends View {
     }
     @Override
     protected void onDraw(Canvas canvas) {
+        mRiceKey=0;
         initSize();
         // 绘制背景
         mPaint.setColor(mBgColor);
@@ -183,7 +219,7 @@ public class CalendarView extends View {
         mDays = new int[6][7];
         // 设置绘制字体大小
         mPaint.setTextSize(mDayTextSize * mMetrics.scaledDensity);
-        mPaintBlack.setTextSize(mDayTextSize* mMetrics.scaledDensity);
+        mPaintBlack.setTextSize(12* mMetrics.scaledDensity);
         // 设置绘制字体颜色
 
         String dayStr;
@@ -231,14 +267,43 @@ public class CalendarView extends View {
 //                    canvas.drawBitmap(mBgOptBitmap, startX- (mBgOptBitmap.getWidth() / 3), startY - (mBgOptBitmap.getHeight() / 2), mPaint);
 //                    mPaint.setColor(mDayPressedColor);
 //                }
-                // 绘制天数
-                if(day+1<10){
-                    canvas.drawCircle(startX+12,startY-15,35,mPaintBackGroundBlue);
-                }else {
-                    canvas.drawCircle(startX + 28, startY - 15, 35, mPaintBackGroundBlue);
-                }
                 mPaintBlack.setColor(Color.WHITE);
-                canvas.drawText(dayStr, startX, startY, mPaintBlack);
+                if(isShowCurDayPaint==1) {
+                    // 绘制天数
+                    if(day+1<10){
+                        canvas.drawCircle(startX,startY-15,35,mPaintBackGroundBlue);
+                    }else {
+                        canvas.drawCircle(startX+6, startY - 15, 35, mPaintBackGroundBlue);
+                    }
+                    mPaintBlack.setTextSize(11* mMetrics.scaledDensity);
+                    canvas.drawText(dayStr, startX-10, startY - 16, mPaintBlack);
+                    Paint newPain=new Paint();
+                    newPain.setColor(Color.WHITE);
+                    newPain.setTextSize(8*mMetrics.scaledDensity);
+                    if(mLinkedHashMap.get(getSelData(mSelYear, mSelMonth, mDays[row][column]))<10) {
+                        if(day+1<10) {
+                            canvas.drawText(mContext.getString(R.string.calendar_rice_num, mLinkedHashMap.get(getSelData(mSelYear, mSelMonth, mDays[row][column])) + ""), startX - 16, startY + 10, newPain);
+                        }else{
+                            canvas.drawText(mContext.getString(R.string.calendar_rice_num, mLinkedHashMap.get(getSelData(mSelYear, mSelMonth, mDays[row][column])) + ""), startX - 8, startY + 10, newPain);
+                        }
+                    }else{
+                        if(day+1<10) {
+                            canvas.drawText(mContext.getString(R.string.calendar_rice_num,mLinkedHashMap.get(getSelData(mSelYear, mSelMonth, mDays[row][column]))+""), startX-18, startY + 10, newPain);
+                        }else{
+                            canvas.drawText(mContext.getString(R.string.calendar_rice_num, mLinkedHashMap.get(getSelData(mSelYear, mSelMonth, mDays[row][column])) + ""), startX - 18, startY + 10, newPain);
+                        }
+                    }
+                    Log.d("gg===========12=",mRiceKey+""+getSelData(mSelYear, mSelMonth, mDays[row][column]));
+                    mRiceKey++;
+                }else{
+                    // 绘制天数
+                    if(day+1<10){
+                        canvas.drawCircle(startX+12,startY-15,40,mPaintBackGroundBlue);
+                    }else {
+                        canvas.drawCircle(startX + 28, startY - 15, 40, mPaintBackGroundBlue);
+                    }
+                    canvas.drawText(dayStr, startX, startY, mPaintBlack);
+                }
             }else if(isShowCurDayPaint==1){
                 canvas.drawCircle(startX+12,startY-15,35,mPaintBackGroundWhite);
                 mPaintBlack.setColor(Color.BLACK);
@@ -341,8 +406,10 @@ public class CalendarView extends View {
             }
             if(mOptionalDates.contains(getSelData(mSelYear, mSelMonth, mDays[row][column]))){
                 mOptionalDates.remove(getSelData(mSelYear, mSelMonth, mDays[row][column]));
+                mLinkedHashMap.remove(getSelData(mSelYear, mSelMonth, mDays[row][column]));
             }else{
                 mOptionalDates.add(getSelData(mSelYear, mSelMonth, mDays[row][column]));
+                mLinkedHashMap.put(getSelData(mSelYear, mSelMonth, mDays[row][column]),1);
             }
             invalidate();
             if (mListener != null) {
@@ -371,6 +438,7 @@ public class CalendarView extends View {
     public void setSelectData(int mSelYear, int mSelMonth,int mSelDate){
 //        mSelectedDates.add(getSelData(mSelYear, mSelMonth, mSelDate));
         selectData=getSelData(mSelYear,mSelMonth-1,mSelDate);
+
         invalidate();
     }
     /**
@@ -380,7 +448,7 @@ public class CalendarView extends View {
         // 初始化每列的大小
         mColumnSize = getWidth() / NUM_COLUMNS;
         // 初始化每行的大小
-        mRowSize = getHeight() / NUM_ROWS;
+        mRowSize = getHeight() / NUM_ROWS+20;
     }
 
     public void setAddMore(){
@@ -389,15 +457,6 @@ public class CalendarView extends View {
             invalidate();
         }
     }
-    /**
-     * 设置可选择日期
-     * @param dates 日期数据
-     */
-    public void setOptionalDate(List<String> dates){
-        this.mOptionalDates = dates;
-        invalidate();
-    }
-
     /**
      * 设置已选日期数据
      */
@@ -451,6 +510,7 @@ public class CalendarView extends View {
             month = month-1;
         }
         setSelYTD(year,month,day);
+
         invalidate();
     }
 
@@ -473,6 +533,7 @@ public class CalendarView extends View {
             month = month + 1;
         }
         setSelYTD(year,month,day);
+
         invalidate();
     }
 
