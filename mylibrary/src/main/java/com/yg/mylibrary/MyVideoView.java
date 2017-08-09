@@ -194,8 +194,8 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-        mVideoData.setVideoPath(videoPath);
-//        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
+//        mVideoData.setVideoPath(videoPath);
+        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
         return this;
     }
     /**
@@ -280,7 +280,7 @@ public class MyVideoView {
         mMaskImage.setVisibility(View.GONE);
         Message message = new Message();
         message.what = 0;
-        handler.sendMessageDelayed(message, 100);
+        handler.sendMessageDelayed(message, 300);
     }
     public VideoData getVideoData(){
         return mVideoData;
@@ -316,7 +316,7 @@ public class MyVideoView {
                             mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
                             stopVideo();
                             setMastShow(true);
-                            mVideoView.seekTo(10);
+//                            mVideoView.seekTo(10);
                         }
                         else{
                             Message message = new Message();
