@@ -194,8 +194,8 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-//        mVideoData.setVideoPath(videoPath);
-        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
+        mVideoData.setVideoPath(videoPath);
+//        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
         return this;
     }
     /**
@@ -280,7 +280,7 @@ public class MyVideoView {
         mMaskImage.setVisibility(View.GONE);
         Message message = new Message();
         message.what = 0;
-        handler.sendMessageDelayed(message, 300);
+        handler.sendMessageDelayed(message, 100);
     }
     public VideoData getVideoData(){
         return mVideoData;
@@ -309,7 +309,7 @@ public class MyVideoView {
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
                     if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<10))&&mVideoData.getCruntTime()>1000){
+                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<100))&&mVideoData.getCruntTime()>1000){
                             setChangeStopPlayImage(false);
                             mProgressBar.setSecondaryProgress(0);
 //                        mProgressBar.setProgress(0);
