@@ -305,18 +305,20 @@ public class MyVideoView {
                     mProgressBar.setMax(mVideoView.getDuration()/1000);
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
-                    if(mVideoData.getTotalTime()>=mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                        Message message = new Message();
-                        message.what = 0;
-                        handler.sendMessageDelayed(message, 1000);
-                    }
-                    else if(mVideoData.getTotalTime()<mVideoData.getCruntTime()){
-                        setChangeStopPlayImage(false);
-                        mProgressBar.setSecondaryProgress(0);
+                    if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
+                        if(!mVideoView.isPlaying()){
+                            setChangeStopPlayImage(false);
+                            mProgressBar.setSecondaryProgress(0);
 //                        mProgressBar.setProgress(0);
-                        mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
-                        stopVideo();
-                        setMastShow(true);
+                            mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
+                            stopVideo();
+                            setMastShow(true);
+                        }
+                        else{
+                            Message message = new Message();
+                            message.what = 0;
+                            handler.sendMessageDelayed(message, 1000);
+                        }
                     }
                     break;
                 case 1:
