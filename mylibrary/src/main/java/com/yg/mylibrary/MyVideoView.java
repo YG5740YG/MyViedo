@@ -194,8 +194,8 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-//        mVideoData.setVideoPath(videoPath);
-        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
+        mVideoData.setVideoPath(videoPath);
+//        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
         return this;
     }
     /**
