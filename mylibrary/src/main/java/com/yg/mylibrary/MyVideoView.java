@@ -99,7 +99,9 @@ public class MyVideoView {
         mVideoStopImageLayout=(LinearLayout)mVideoViewLayout.findViewById(R.id.product_video_big_stop_layout);
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
     }
-
+    public ImageView getMaskImage(){
+        return mMaskImage;
+    }
     /**
      * 设置遮罩显示或者隐藏
      * @param show
@@ -306,13 +308,14 @@ public class MyVideoView {
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
                     if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                        if(!mVideoView.isPlaying()){
+                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<1000))&&mVideoData.getCruntTime()>1000){
                             setChangeStopPlayImage(false);
                             mProgressBar.setSecondaryProgress(0);
 //                        mProgressBar.setProgress(0);
                             mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
                             stopVideo();
                             setMastShow(true);
+                            mVideoView.seekTo(10);
                         }
                         else{
                             Message message = new Message();
