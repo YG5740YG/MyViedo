@@ -309,7 +309,7 @@ public class MyVideoView {
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
                     if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<1000))&&mVideoData.getCruntTime()>1000){
+                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<10))&&mVideoData.getCruntTime()>1000){
                             setChangeStopPlayImage(false);
                             mProgressBar.setSecondaryProgress(0);
 //                        mProgressBar.setProgress(0);
