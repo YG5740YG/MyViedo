@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/es_b">
     <LinearLayout
         android:id="@+id/linea"
@@ -20,15 +20,15 @@
             <VideoView
                 android:id="@+id/my_video_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:background="@color/es_w"
                 />
             </LinearLayout>
             <ImageView
                 android:id="@+id/image_mask"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
                 />
             <LinearLayout
                 android:id="@+id/product_video_big_stop_layout"
