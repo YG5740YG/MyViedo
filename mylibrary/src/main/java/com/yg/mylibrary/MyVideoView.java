@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class MyVideoView {
 
     Bitmap mBitmap;
     String mImagePath;
+
+    LinearLayout mVideoControl;
     /**
      * 获取视频播放器
      * @return
@@ -98,6 +101,7 @@ public class MyVideoView {
         mVideoContent=(LinearLayout)mVideoViewLayout.findViewById(R.id.video_content);
         mVideoStopImageLayout=(LinearLayout)mVideoViewLayout.findViewById(R.id.product_video_big_stop_layout);
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
+        mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
     }
     public ImageView getMaskImage(){
         return mMaskImage;
@@ -115,6 +119,12 @@ public class MyVideoView {
     }
     public void setVideoPlayingValue(boolean playingFlage){
         mVideoData.setVideoPlaying(playingFlage);
+    }
+    public LinearLayout getVideoControlView(){
+        return mVideoControl;
+    }
+    public VideoView getVideoView(){
+        return mVideoView;
     }
     /**
      * 设置遮罩停止按钮显示或者隐藏
@@ -184,8 +194,18 @@ public class MyVideoView {
                     @Override
                     public void onBufferingUpdate(MediaPlayer mp, int percent) {
                         mProgressBar.setProgress(percent);
+                        Log.d("ggg==========precent==",percent+"");
                     }
                 });
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                setChangeStopPlayImage(false);
+                mProgressBar.setSecondaryProgress(0);
+                mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
+                stopVideo();
             }
         });
     }
@@ -194,8 +214,8 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-        mVideoData.setVideoPath(videoPath);
-//        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
+//        mVideoData.setVideoPath(videoPath);
+        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
         return this;
     }
     /**
@@ -309,20 +329,9 @@ public class MyVideoView {
                     mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
                     mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
                     if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                        if(((!mVideoView.isPlaying())||(mVideoData.getTotalTime()-mVideoData.getCruntTime()<100))&&mVideoData.getCruntTime()>1000){
-                            setChangeStopPlayImage(false);
-                            mProgressBar.setSecondaryProgress(0);
-//                        mProgressBar.setProgress(0);
-                            mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
-                            stopVideo();
-                            setMastShow(true);
-//                            mVideoView.seekTo(10);
-                        }
-                        else{
                             Message message = new Message();
                             message.what = 0;
                             handler.sendMessageDelayed(message, 1000);
-                        }
                     }
                     break;
                 case 1:
