@@ -5,10 +5,14 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yg.mylibrary.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/8/4 0004.
@@ -29,6 +33,10 @@ public class MyCalendarView extends RelativeLayout implements View.OnClickListen
     public OnListen mOnListen;
 
     public CalendarView mCalendarView;
+
+    public LinearLayout mCalenderTitleViewLayout;
+
+    List<ImageButton> mImageButtons;
     public MyCalendarView(Context context,int modelType) {
         super(context);
         inint(modelType);
@@ -49,10 +57,17 @@ public class MyCalendarView extends RelativeLayout implements View.OnClickListen
         mTextSelectMonth = (TextView)topView.findViewById(R.id.txt_select_month);
         mLastMonthView = (ImageButton)topView.findViewById(R.id.img_select_last_month);
         mNextMonthView = (ImageButton)topView.findViewById(R.id.img_select_next_month);
+        mCalenderTitleViewLayout=(LinearLayout)topView.findViewById(R.id.calendar_title);
         mCalendarView.setShowCurDay(modelType).reDraw();
+        mImageButtons=new ArrayList<>();
+        mImageButtons.add(mLastMonthView);
+        mImageButtons.add(mNextMonthView);
         mLastMonthView.setOnClickListener(this);
         mNextMonthView.setOnClickListener(this);
         addView(topView);
+    }
+    public List<ImageButton> getSelectImageButton(){
+        return mImageButtons;
     }
     public CalendarView getCanlendarView(){
         return mCalendarView;
