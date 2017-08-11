@@ -204,6 +204,7 @@ public class MyVideoView {
                 setChangeStopPlayImage(false);
                 mProgressBar.setSecondaryProgress(0);
                 mVideoControllTextView.setText(Tools.timeCount(0,mVideoData,false)+"/"+mVideoData.getDuration());
+                mProgressBar.setProgress(0);
                 stopVideo();
             }
         });
