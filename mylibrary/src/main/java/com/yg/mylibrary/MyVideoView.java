@@ -73,16 +73,6 @@ public class MyVideoView {
     String mImagePath;
 
     LinearLayout mVideoControl;
-    /**
-     * 获取视频播放器
-     * @return
-     */
-    public View getVideoViewLayout(){
-        return mVideoViewLayout;
-    }
-    public MyVideoView(Context context){
-        this.mContext=context;
-    }
     public MyVideoView inintVideoData(){
         mVideoViewLayout= LayoutInflater.from(mContext).inflate(R.layout.fragment_video_test_layout,null);
         mVideoData=new VideoData();
@@ -103,6 +93,21 @@ public class MyVideoView {
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
         mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
     }
+    public MyVideoView(Context context){
+        this.mContext=context;
+    }
+    /**
+     * 获取视频播放器
+     * @return
+     */
+    public View getVideoViewLayout(){
+        return mVideoViewLayout;
+    }
+
+    /**
+     * 获取遮罩图片
+     * @return
+     */
     public ImageView getMaskImage(){
         return mMaskImage;
     }
@@ -208,8 +213,7 @@ public class MyVideoView {
      * @param videoPath 视频路径
      */
     public MyVideoView setVideoPath(String videoPath){
-//        mVideoData.setVideoPath(videoPath);
-        mVideoData.setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ");
+        mVideoData.setVideoPath(videoPath);
         return this;
     }
     /**
@@ -245,6 +249,7 @@ public class MyVideoView {
     public void stopVideo(){
         mVideoView.pause();
         setMaskStopImageShow(true);
+        mMyVideoView.setChangeStopPlayImage(false);
     }
     /**
      * 获取视频时间总长
@@ -334,6 +339,9 @@ public class MyVideoView {
                 case 2:
                     mVideoView.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
                     setMastShow(false);
+                    setMaskStopImageShow(false);
+                    setChangeStopPlayImage(true);
+                    mMyVideoView.setVideoPlayingValue(true);
                 default:
                     break;
             }
