@@ -120,12 +120,6 @@ public class MyVideoView {
     public void setVideoPlayingValue(boolean playingFlage){
         mVideoData.setVideoPlaying(playingFlage);
     }
-    public LinearLayout getVideoControlView(){
-        return mVideoControl;
-    }
-    public VideoView getVideoView(){
-        return mVideoView;
-    }
     /**
      * 设置遮罩停止按钮显示或者隐藏
      * @param show
