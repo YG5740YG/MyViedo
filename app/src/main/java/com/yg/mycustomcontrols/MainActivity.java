@@ -1,9 +1,12 @@
 package com.yg.mycustomcontrols;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yg.mylibrary.Calendar.CalendarView;
 import com.yg.mylibrary.Calendar.MyCalendarView;
@@ -16,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
     MyVideoView mMyVideoView;
     String mImagePath;
     MyCalendarView mMyCalendarView;
+    Boolean flage=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,18 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
                 .loadeVideo()
 //                .setMaskImage(R.mipmap.ic_launcher_round);
         .setMaskImage("https://img2.ch999img.com/pic/product/440x440/20170214152618892.jpg");
+        mMyVideoView.getQieHuanView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        if(flage){
+                            flage=false;
+                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        }else{
+                            flage=true;
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        }
+            }
+        });
         linearLayout.addView(mMyVideoView.getVideoViewLayout());
         mMyCalendarView=new MyCalendarView(getApplicationContext(),1);
         mMyCalendarView.setOnListen(this);
@@ -53,13 +69,24 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
         linearLayout.addView(mMyCalendarView);
         if(savedInstanceState!=null){
             mMyVideoView.setHorizontalData(savedInstanceState.getSerializable("videoData"));
+            Log.d("gg============",mMyVideoView.getCruntTime()+","+mMyVideoView.getTotalTime());
+            mMyVideoView.setVideoCurrentTime(savedInstanceState.getInt("cruntTime"));
+            if(savedInstanceState.getBoolean("isPlaying")) {
+                mMyVideoView.startVideo();
+            }else{
+                mMyVideoView.stopVideo();
+            }
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.d("gg============save==",mMyVideoView.getCruntTime()+","+mMyVideoView.getTotalTime());
         outState.putSerializable("videoData",mMyVideoView.getVideoData());
+        outState.putInt("cruntTime",mMyVideoView.getCruntTime());
+        outState.putInt("totalTime",mMyVideoView.getTotalTime());
+        outState.putBoolean("isPlaying",mMyVideoView.IsPlaying());
     }
 
     @Override

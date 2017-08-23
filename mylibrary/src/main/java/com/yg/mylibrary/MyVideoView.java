@@ -73,6 +73,10 @@ public class MyVideoView {
     String mImagePath;
 
     LinearLayout mVideoControl;
+    TextView mQieHuan;
+    public TextView getQieHuanView (){
+        return mQieHuan;
+    }
     public MyVideoView inintVideoData(){
         mVideoViewLayout= LayoutInflater.from(mContext).inflate(R.layout.fragment_video_test_layout,null);
         mVideoData=new VideoData();
@@ -92,9 +96,13 @@ public class MyVideoView {
         mVideoStopImageLayout=(LinearLayout)mVideoViewLayout.findViewById(R.id.product_video_big_stop_layout);
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
         mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
+        mQieHuan=(TextView)mVideoViewLayout.findViewById(R.id.qiehuan);
     }
     public MyVideoView(Context context){
         this.mContext=context;
+    }
+    public boolean IsPlaying(){
+        return mVideoData.isVideoPlaying();
     }
     /**
      * 获取视频播放器
@@ -321,17 +329,17 @@ public class MyVideoView {
             switch (msg.what) {
                 case 0:
                     mVideoData.setDuration(Tools.timeCount(getTotalTime(),mVideoData,true));
-                    String CrrrentPosition=Tools.timeCount(mVideoData.getCruntTime(),mVideoData,false);
+                    String CrrrentPosition=Tools.timeCount(getCruntTime(),mVideoData,false);
                     mVideoData.setCruntTime(getCruntTime());
                     mVideoData.setTotalTime(getTotalTime());
                     mVideoData.setCrrrentPosition(CrrrentPosition);
                     mProgressBar.setMax(mVideoView.getDuration()/1000);
-                    mProgressBar.setSecondaryProgress(mVideoData.getCruntTime()/1000);
-                    mVideoControllTextView.setText(mVideoData.getCrrrentPosition()+"/"+mVideoData.getDuration());
-                    if(mVideoData.getTotalTime()>mVideoData.getCruntTime()&&mVideoData.isVideoPlaying()||mVideoData.getCruntTime()<1000){
-                            Message message = new Message();
-                            message.what = 0;
-                            handler.sendMessageDelayed(message, 1000);
+                    mProgressBar.setSecondaryProgress(getCruntTime()/1000);
+                    mVideoControllTextView.setText(CrrrentPosition+"/"+mVideoData.getDuration());
+                    if(getTotalTime()>getCruntTime()&&mVideoData.isVideoPlaying()||getCruntTime()<1000){
+                        Message message = new Message();
+                        message.what = 0;
+                        handler.sendMessageDelayed(message, 1000);
                     }
                     break;
                 case 1:
