@@ -74,6 +74,8 @@ public class MyVideoView {
 
     LinearLayout mVideoControl;
     TextView mQieHuan;
+    TextView mLineFour;
+    TextView mLineFive;
     public TextView getQieHuanView (){
         return mQieHuan;
     }
@@ -83,6 +85,7 @@ public class MyVideoView {
         findView();
         setUp();
         mMyVideoView=this;
+        setLineShow(false);
         return this;
     }
     private void findView() {
@@ -97,6 +100,17 @@ public class MyVideoView {
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
         mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
         mQieHuan=(TextView)mVideoViewLayout.findViewById(R.id.qiehuan);
+        mLineFour=(TextView)mVideoViewLayout.findViewById(R.id.line4);
+        mLineFour=(TextView)mVideoViewLayout.findViewById(R.id.line5);
+    }
+    public void setLineShow(Boolean flage){
+        if(flage){
+            mLineFour.setVisibility(View.VISIBLE);
+            mLineFive.setVisibility(View.VISIBLE);
+        }else{
+            mLineFour.setVisibility(View.GONE);
+            mLineFive.setVisibility(View.GONE);
+        }
     }
     public MyVideoView(Context context){
         this.mContext=context;

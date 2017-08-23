@@ -97,7 +97,8 @@
                 android:gravity="center"
                 android:text="退出全屏"
                 android:padding="@dimen/half_margin"
-                android:textColor="@color/es_w"/>
+                android:textColor="@color/es_w"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
