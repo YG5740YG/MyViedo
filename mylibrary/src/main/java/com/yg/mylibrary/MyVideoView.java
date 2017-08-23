@@ -101,7 +101,7 @@ public class MyVideoView {
         mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
         mQieHuan=(TextView)mVideoViewLayout.findViewById(R.id.qiehuan);
         mLineFour=(TextView)mVideoViewLayout.findViewById(R.id.line4);
-        mLineFour=(TextView)mVideoViewLayout.findViewById(R.id.line5);
+        mLineFive=(TextView)mVideoViewLayout.findViewById(R.id.line5);
     }
     public void setLineShow(Boolean flage){
         if(flage){
