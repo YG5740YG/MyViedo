@@ -53,6 +53,8 @@ public class Tools {
             else {
                 timeStringValue = timeStringValue + mMin + ":";
             }
+        }else {
+            timeStringValue ="00:";
         }
         if (mS < 10) {
             timeStringValue=timeStringValue+"0" + mS;

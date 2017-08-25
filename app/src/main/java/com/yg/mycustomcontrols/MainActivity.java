@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
         LinearLayout linearLayout=(LinearLayout)findViewById(R.id.content);
          mMyVideoView=new MyVideoView(this)
                 .inintVideoData()
-                .setVideoPath("https://img2.ch999img.com//pic/product/opic/201706162136041.mp4")
-//                .setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ")
+//                .setVideoPath("https://img2.ch999img.com//pic/product/opic/201706162136041.mp4")
+                .setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ")
                 .loadeVideo()
 //                .setMaskImage(R.mipmap.ic_launcher_round);
         .setMaskImage("https://img2.ch999img.com/pic/product/440x440/20170214152618892.jpg");
