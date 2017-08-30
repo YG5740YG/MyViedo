@@ -52,6 +52,7 @@
             android:orientation="horizontal"
             android:gravity="center|left"
             android:layout_alignParentBottom="true"
+            android:background="@color/es_b"
             >
             <LinearLayout
                 android:id="@+id/video_content"
