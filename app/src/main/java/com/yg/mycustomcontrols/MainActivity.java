@@ -1,5 +1,6 @@
 package com.yg.mycustomcontrols;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,31 +20,19 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
     MyVideoView mMyVideoView;
     String mImagePath;
     MyCalendarView mMyCalendarView;
-    Boolean flage=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout linearLayout=(LinearLayout)findViewById(R.id.content);
          mMyVideoView=new MyVideoView(this)
-                .inintVideoData()
-//                .setVideoPath("https://img2.ch999img.com//pic/product/opic/201706162136041.mp4")
-                .setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ")
+                .inintVideoData(MainActivity.this)
+                .setVideoPath("https://img2.ch999img.com//pic/product/opic/201706162136041.mp4")
+//                .setVideoPath("https://img2.ch999img.com//pic/product/opic/20170809104121921.mp4 ")
                 .loadeVideo()
 //                .setMaskImage(R.mipmap.ic_launcher_round);
         .setMaskImage("https://img2.ch999img.com/pic/product/440x440/20170214152618892.jpg");
-        mMyVideoView.getQieHuanView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                        if(flage){
-                            flage=false;
-                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        }else{
-                            flage=true;
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        }
-            }
-        });
+        mMyVideoView.getQieHuanView().setVisibility(View.VISIBLE);
         linearLayout.addView(mMyVideoView.getVideoViewLayout());
         mMyCalendarView=new MyCalendarView(getApplicationContext(),1);
         mMyCalendarView.setOnListen(this);
@@ -75,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements MyCalendarView.On
                 mMyVideoView.startVideo();
             }else{
                 mMyVideoView.stopVideo();
+            }
+            if(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE==getRequestedOrientation()) {
+                mMyVideoView.getVideoControl().setVisibility(View.GONE);
+            }else{
+                mMyVideoView.getVideoControl().setVisibility(View.VISIBLE);
             }
         }
     }

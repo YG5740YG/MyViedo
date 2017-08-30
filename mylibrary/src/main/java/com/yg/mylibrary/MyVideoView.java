@@ -1,6 +1,9 @@
 package com.yg.mylibrary;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -8,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,6 +76,7 @@ public class MyVideoView {
     TextView mQieHuan;
     TextView mLineFour;
     TextView mLineFive;
+    Activity mActivity;
     public TextView getQieHuanView (){
         return mQieHuan;
     }
@@ -84,6 +89,36 @@ public class MyVideoView {
         setLineShow(false);
         return this;
     }
+    public MyVideoView inintVideoData(Activity activity){
+        mVideoViewLayout= LayoutInflater.from(mContext).inflate(R.layout.fragment_video_test_layout,null);
+        mVideoData=new VideoData();
+        findView();
+        setUp();
+        mMyVideoView=this;
+        mActivity=activity;
+        setLineShow(false);
+        return this;
+    }
+    public void setOrientation(){
+        if(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT==mActivity.getRequestedOrientation()){
+           mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }else{
+            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
+    public LinearLayout getVideoControl(){
+        return mVideoControl;
+    }
+    public void qiehuanClick(){
+        mQieHuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setOrientation();
+            }
+        });
+    }
+
     private void findView() {
         mVideoView=(VideoView)mVideoViewLayout.findViewById(R.id.my_video_view);
         mVideoControllTextView=(TextView)mVideoViewLayout.findViewById(R.id.video_view_timecontrol_text_view);
@@ -94,7 +129,7 @@ public class MyVideoView {
         mVideoContent=(LinearLayout)mVideoViewLayout.findViewById(R.id.video_content);
         mVideoStopImageLayout=(LinearLayout)mVideoViewLayout.findViewById(R.id.product_video_big_stop_layout);
         mMaskImage=(ImageView)mVideoViewLayout.findViewById(R.id.image_mask);
-        mVideoControl=(LinearLayout)mVideoView.findViewById(R.id.video_control_layout);
+        mVideoControl=(LinearLayout)mVideoViewLayout.findViewById(R.id.video_control_layout);
         mQieHuan=(TextView)mVideoViewLayout.findViewById(R.id.qiehuan);
         mLineFour=(TextView)mVideoViewLayout.findViewById(R.id.line4);
         mLineFive=(TextView)mVideoViewLayout.findViewById(R.id.line5);
@@ -226,6 +261,24 @@ public class MyVideoView {
                 stopVideo();
             }
         });
+        mVideoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN) {
+                    if(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE==mActivity.getRequestedOrientation()){
+                        mVideoControl.setVisibility(View.VISIBLE);
+                    mVideoControl.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mVideoControl.setVisibility(View.GONE);
+                        }
+                    },5000);
+                    }
+                }
+                return true;
+            }
+        });
+        qiehuanClick();
     }
     /**
      *  设置播放路径
