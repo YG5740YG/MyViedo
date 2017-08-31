@@ -102,8 +102,10 @@ public class MyVideoView {
     public void setOrientation(){
         if(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT==mActivity.getRequestedOrientation()){
            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }else{
+        }else if(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE==mActivity.getRequestedOrientation()){
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else {
+            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
 
